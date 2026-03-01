@@ -45,7 +45,7 @@ class DLL:
     def insm(self, location, data):
         new_node = Node(data)
 
-        if self.is_emtpy(): 
+        if self.is_empty(): 
             # No extra work needed 
             self.head = new_node
         else: 
@@ -102,6 +102,7 @@ class DLL:
             while current_node is not None:
                 print(current_node.data)
                 current_node = current_node.next
+            print("\n")
         
 # Example 
 
@@ -109,7 +110,21 @@ def main():
     # Initialize the DLL
     dll = DLL()
 
-    
-    
+    dll.inse(1)
+    dll.inse(2)
+    dll.inse(3)
+    dll.print_list() # 1 2 3
+
+    dll.insf(4)
+    dll.print_list() # 4 1 2 3
+
+    dll.insm(2, 5)
+    dll.print_list() # 4 1 2 5 3
+
+    dll.delete(5)
+    dll.print_list() # 4 1 2 3
+
+    dll.delf()
+    dll.print_list() # 1 2 3
 
 main()
