@@ -150,34 +150,29 @@ class BST:
         return 1 + max(left_height, right_height)
 
     # delete method
-    def delete(self, key): 
-        if self.is_empty(): 
-            # If the tree is empty, make the new node the root
-            return ("Tree is empty")
-        else: 
-            root_tnode = self.root 
+    def delete(self, current_tnode, key):
+        if current_tnode is None:
+            return None
 
-            # If key found at root node 
-            while True: 
-                if key == root_tnode.key: 
-                    if root_tnode.rc is None: 
-                        # Make the key None
-                        root_tnode = None
-                    elif root_tnode.rc is not None: 
-                        root_tnode = root_tnode.rc 
-                else:
-                    if key <= root_tnode.key: 
-                        if root_tnode.lc is None: 
-                            return "Key not in tree"
-                        else: 
-                            root_tnode = root_tnode.lc
-                    elif key > root_tnode.key: 
-                        if root_tnode.rc is None: 
-                            return "Key not in tree"
-                        else: 
-                            root_tnode = root_tnode.rc
-        
-        
+        # Here we traverse the tree, and it's recursive 
+        if key < current_tnode.key:
+            current_tnode.lc = self.delete(current_tnode.lc, key)
+        elif key > current_tnode.key:
+            current_tnode.rc = self.delete(current_tnode.rc, key)
+        else:
+            # If we find the node
+            # If there is no left child 
+            if current_tnode.lc is None:
+                return current_tnode.rc  
+            elif current_tnode.rc is None:
+                return current_tnode.lc  
+            else:
+                # If there are two children
+                # Find inorder successor (min in right subtree)
+                succ_key = self.treeMIN(current_tnode.rc)
+                current_tnode.key = succ_key
+                current_tnode.rc = self.delete(current_tnode.rc, succ_key)
+        return current_tnode        
 
 def main(): 
     bst = BST()
@@ -213,4 +208,15 @@ def main():
     print(bst.parent(3)) # 2
 
     print(f"Height: {bst.height(bst.root)}") # Height: 5
+
+    bst.delete(bst.root, 3)
+
+    bst.inorder(bst.root) # 1 -> 2 -> 4 -> 5 ->
+    print("\n")
+    
+    bst.delete(bst.root, 4)
+
+    bst.inorder(bst.root)
+
+
 main()
