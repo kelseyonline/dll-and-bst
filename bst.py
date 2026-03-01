@@ -23,17 +23,19 @@ class BST:
             self.root = new_tnode 
         else: 
             root_tnode = self.root 
-
-            if new_tnode.key <= root_tnode.key: 
-                if root_tnode.lc == None: 
-                    root_tnode.lc = new_tnode
-                # Make the left child the new comparator
-                else: root_tnode = root_tnode.lc
-            elif new_tnode.key > root_tnode.key: 
-                if root_tnode.rc == None: 
-                    root_tnode.rc = new_tnode
-                # Make the right child the new comparator 
-                else: root_tnode = root_tnode.rc
+            while True: 
+                if new_tnode.key <= root_tnode.key: 
+                    if root_tnode.lc == None: 
+                        root_tnode.lc = new_tnode
+                        break
+                    # Make the left child the new comparator
+                    else: root_tnode = root_tnode.lc
+                elif new_tnode.key > root_tnode.key: 
+                    if root_tnode.rc == None: 
+                        root_tnode.rc = new_tnode
+                        break
+                    # Make the right child the new comparator 
+                    else: root_tnode = root_tnode.rc
 
     # search method 
     def search(self, key): 
@@ -60,6 +62,26 @@ class BST:
                         else: 
                             root_tnode = root_tnode.rc
 
+    def inorder(self, current_tnode):
+        # You have to do this recursively
+        if current_tnode is not None: 
+            self.inorder(current_tnode.lc)
+            print (f"{current_tnode.key}" + " ->", end=" ")
+            self.inorder(current_tnode.rc)
+
+    def preorder(self, current_tnode):
+        if current_tnode is not None: 
+            print (f"{current_tnode.key}" + " ->", end=" ")
+            self.preorder(current_tnode.lc)
+            self.preorder(current_tnode.rc)
+
+    def postorder(self, current_tnode):
+        if current_tnode is not None: 
+            self.postorder(current_tnode.lc)
+            self.postorder(current_tnode.rc)
+            print (f"{current_tnode.key}" + " ->", end=" ")
+    
+
 def main(): 
     bst = BST()
 
@@ -72,5 +94,21 @@ def main():
     bst.insert(2)
 
     print(bst.search(2)) # True
+
+    bst.inorder(bst.root) # 1 -> 2 ->
+    print("\n")
+
+    bst.insert(3)
+    bst.insert(4)
+    bst.insert(5) 
+
+    bst.inorder(bst.root) # 1 -> 2 -> 3 -> 4 -> 5 ->
+    print("\n")
+
+    bst.preorder(bst.root) # 1 -> 2 -> 3 -> 4 -> 5 ->
+    print("\n")
+
+    bst.postorder(bst.root) # 5 -> 4 -> 3 -> 2 -> 1 ->
+    print("\n")
 
 main()
